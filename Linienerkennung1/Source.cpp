@@ -11,7 +11,7 @@ int main(int argc, char** argv){
 
 	Mat img = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);
 
-	if (img.empty())
+	if (img.empty()) // make sure a image i loaded
 	{
 		cout << "!!! Failed imread(): image not found" << endl;
 	}
@@ -57,9 +57,10 @@ int main(int argc, char** argv){
 				i--;
 			}
 
-			finish.at<uchar>(y, ((right - left) / 2) + left) = 255;
+			finish.at<uchar>(y, ((right - left) / 2) + left) = 255; //Center of the Line
 		}
 
+		// displaying the Images
 
 		namedWindow("Raw", WINDOW_AUTOSIZE);
 		imshow("Raw", img);
