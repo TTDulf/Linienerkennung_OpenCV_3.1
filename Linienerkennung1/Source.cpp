@@ -7,11 +7,11 @@ using namespace std;
 using namespace cv;
 
 
-int main(int argc, char** argv){
+int main(){
 
-	Mat img = imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE);
+	Mat img = imread("E:\\Seminar\\Linienerkennung\\TestBilder\\Line2_noise.jpg", CV_LOAD_IMAGE_GRAYSCALE);
 
-	if (img.empty()) // make sure a image i loaded
+	if (img.empty()) // make sure a image is loaded
 	{
 		cout << "!!! Failed imread(): image not found" << endl;
 	}
@@ -35,6 +35,9 @@ int main(int argc, char** argv){
 		Laplacian(thresh, lap_raw, CV_16S, 3, 1, 0, BORDER_DEFAULT);
 		convertScaleAbs(lap_raw, finish);
 
+		const int middle = (finish.cols / 2);
+		int center[10000];
+
 		for (int y = 0; y < finish.rows; y++){
 			int left = 0;
 			int right = 0;
@@ -57,11 +60,12 @@ int main(int argc, char** argv){
 				i--;
 			}
 
+			center[y] = (((right - left) / 2) + left) - middle; // left / right of the line
+			finish.at<uchar>(y, middle) = 100; // Center
 			finish.at<uchar>(y, ((right - left) / 2) + left) = 255; //Center of the Line
 		}
 
 		// displaying the Images
-
 		namedWindow("Raw", WINDOW_AUTOSIZE);
 		imshow("Raw", img);
 
@@ -73,7 +77,6 @@ int main(int argc, char** argv){
 
 		namedWindow("Thresh", WINDOW_AUTOSIZE);
 		imshow("Thresh", thresh);
-
 		namedWindow("Final", WINDOW_AUTOSIZE);
 		imshow("Final", finish);
 
